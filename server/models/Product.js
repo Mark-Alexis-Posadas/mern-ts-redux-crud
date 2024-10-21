@@ -29,4 +29,4 @@ const ProductSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("Employee", ProductSchema);
+module.exports = mongoose.model("Product", ProductSchema);
