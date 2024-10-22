@@ -12,7 +12,7 @@ export const AddProduct: FC = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-calc">
       <form className="p-3 rounded shadow-md bg-slate-50 w-[600px] flex flex-col">
         <h2 className="mb-5 font-bold text-xl">Add Product</h2>
         <input
@@ -50,7 +50,10 @@ export const AddProduct: FC = () => {
           className="bg-white mb-3 rounded p-2"
           placeholder="image URL"
         />
-        <button type="submit" className="bg-blue-500 rounded p-2 text-white">
+        <button
+          type="submit"
+          className="bg-indigo-500 rounded p-2 hover:bg-indigo-600 text-white"
+        >
           Submit
         </button>
       </form>
