@@ -9,7 +9,7 @@ interface Product {
   stock: number;
   image: string;
 }
-const fetchAllProductsSlice = createApi({
+const apiSlice = createApi({
   reducerPath: "apissss",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000/api",
@@ -19,8 +19,12 @@ const fetchAllProductsSlice = createApi({
     getProducts: builder.query<Product[], void>({
       query: () => "/products/get-all-products",
     }),
+
+    getSingleProduct: builder.query<Product[], void>({
+      query: (id) => `/products/get-single-product/${id}`,
+    }),
   }),
 });
 
-export const { useGetProductsQuery } = fetchAllProductsSlice;
-export default fetchAllProductsSlice;
+export const { useGetProductsQuery } = apiSlice;
+export default apiSlice;

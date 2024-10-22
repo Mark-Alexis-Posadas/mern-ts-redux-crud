@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import fetchAllProductsSlice from "../features/apiSlice";
+import apiSlice from "../features/apiSlice";
 
 const store = configureStore({
   reducer: {
     // counter: counterReducer,
-    [fetchAllProductsSlice.reducerPath]: fetchAllProductsSlice.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(fetchAllProductsSlice.middleware),
+    getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 // Define the RootState type
