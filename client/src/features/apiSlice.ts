@@ -10,7 +10,7 @@ interface Product {
   image: string;
 }
 const apiSlice = createApi({
-  reducerPath: "apissss",
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000/api",
   }),

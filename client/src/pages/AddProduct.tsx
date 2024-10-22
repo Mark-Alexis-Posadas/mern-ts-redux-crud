@@ -1,5 +1,6 @@
 import { FC } from "react";
-
+import { handleFormValues } from "../features/addProductSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 export const AddProduct: FC = () => {
   const categories = [
     "Electronics",
@@ -11,6 +12,13 @@ export const AddProduct: FC = () => {
     "Transportation",
   ];
 
+  const { name, description, price, category, stock, image } = useAppSelector();
+  const dispatch = useAppDispatch();
+
+  const handleFormChange = (e) => {
+    dispatch(handleFormValues({ name: e.target.name, value: e.target.value }));
+  };
+
   return (
     <div className="flex items-center justify-center min-h-calc">
       <form className="p-3 rounded shadow-md bg-slate-50 w-[600px] flex flex-col">
@@ -19,18 +27,32 @@ export const AddProduct: FC = () => {
           type="text"
           className="bg-white mb-3 rounded p-2"
           placeholder="name"
+          name="name"
+          value={name}
+          onChange={handleFormChange}
         />
         <input
           type="text"
           className="bg-white mb-3 rounded p-2"
           placeholder="description"
+          name="description"
+          value={description}
+          onChange={handleFormChange}
         />
         <input
           type="number"
           className="bg-white mb-3 rounded p-2"
           placeholder="price"
+          name="price"
+          value={price}
+          onChange={handleFormChange}
         />
-        <select className="bg-white mb-3 rounded p-2">
+        <select
+          className="bg-white mb-3 rounded p-2"
+          name="catergory"
+          value={category}
+          onChange={handleFormChange}
+        >
           <option value="" disabled selected>
             Select a category
           </option>
@@ -44,11 +66,17 @@ export const AddProduct: FC = () => {
           type="number"
           className="bg-white mb-3 rounded p-2"
           placeholder="stock"
+          name="stock"
+          value={stock}
+          onChange={handleFormChange}
         />
         <input
           type="url"
           className="bg-white mb-3 rounded p-2"
           placeholder="image URL"
+          name="image"
+          value={image}
+          onChange={handleFormChange}
         />
         <button
           type="submit"
