@@ -20,9 +20,10 @@ export const AddProduct: FC = () => {
   const formValues = useAppSelector(
     (state) => state.addProductSlice.formValues
   );
+  const isEditing = useAppSelector((state) => state.addProductSlice.isEditing);
   const { name, description, price, category, stock, image } = formValues;
   const [createProduct] = useCreateNewProductMutation();
-
+  console.log(isEditing);
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -36,8 +37,16 @@ export const AddProduct: FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name || !description || !price || !category || !stock || !image) {
+      alert("Please fill out the fields");
+      return;
+    }
     try {
-      await createProduct(formValues);
+      await createProduct({
+        ...formValues,
+        price: Number(formValues.price),
+        stock: Number(formValues.stock),
+      });
       navigate("/");
     } catch (error) {
       console.error("Failed to create product: ", error);
@@ -50,7 +59,9 @@ export const AddProduct: FC = () => {
         className="p-3 rounded shadow-md bg-slate-50 w-[600px] flex flex-col"
         onSubmit={handleFormSubmit}
       >
-        <h2 className="mb-5 font-bold text-xl">Add Product</h2>
+        <h2 className="mb-5 font-bold text-xl">
+          {isEditing ? "Edit Product" : "Add Product"}
+        </h2>
         <input
           type="text"
           className="bg-white mb-3 rounded p-2"

@@ -11,6 +11,7 @@ interface FormTypes {
 
 interface State {
   formValues: FormTypes;
+  isEditing: boolean;
 }
 
 const initialState: State = {
@@ -22,6 +23,7 @@ const initialState: State = {
     stock: "",
     image: "",
   },
+  isEditing: false,
 };
 
 export const addProductSlice = createSlice({
@@ -34,8 +36,12 @@ export const addProductSlice = createSlice({
     ) => {
       state.formValues[action.payload.name] = action.payload.value;
     },
+
+    handleEdit: (state) => {
+      state.isEditing = true;
+    },
   },
 });
 
-export const { handleFormValues } = addProductSlice.actions;
+export const { handleFormValues, handleEdit } = addProductSlice.actions;
 export default addProductSlice.reducer;
