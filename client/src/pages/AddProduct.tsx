@@ -1,27 +1,55 @@
 import { FC } from "react";
-import { handleFormValues } from "../features/addProductSlice";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { handleFormValues } from "../features/addProductSlice";
+import { useCreateNewProductMutation } from "../features/apiSlice";
+
+const categories = [
+  "Electronics",
+  "Wearables",
+  "Photography",
+  "Audio",
+  "Smart Home",
+  "Gaming",
+  "Transportation",
+];
+
 export const AddProduct: FC = () => {
-  const categories = [
-    "Electronics",
-    "Wearables",
-    "Photography",
-    "Audio",
-    "Smart Home",
-    "Gaming",
-    "Transportation",
-  ];
-
-  const { name, description, price, category, stock, image } = useAppSelector();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const formValues = useAppSelector(
+    (state) => state.addProductSlice.formValues
+  );
+  const { name, description, price, category, stock, image } = formValues;
+  const [createProduct] = useCreateNewProductMutation();
 
-  const handleFormChange = (e) => {
-    dispatch(handleFormValues({ name: e.target.name, value: e.target.value }));
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    dispatch(
+      handleFormValues({
+        name: e.target.name as keyof typeof formValues,
+        value: e.target.value,
+      })
+    );
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createProduct(formValues);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to create product: ", error);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-calc">
-      <form className="p-3 rounded shadow-md bg-slate-50 w-[600px] flex flex-col">
+    <div className="flex items-center justify-center min-h-screen">
+      <form
+        className="p-3 rounded shadow-md bg-slate-50 w-[600px] flex flex-col"
+        onSubmit={handleFormSubmit}
+      >
         <h2 className="mb-5 font-bold text-xl">Add Product</h2>
         <input
           type="text"
@@ -49,11 +77,11 @@ export const AddProduct: FC = () => {
         />
         <select
           className="bg-white mb-3 rounded p-2"
-          name="catergory"
+          name="category"
           value={category}
           onChange={handleFormChange}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Select a category
           </option>
           {categories.map((category, index) => (
