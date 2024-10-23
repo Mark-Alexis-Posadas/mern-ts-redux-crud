@@ -7,9 +7,12 @@ export const Navbar: FC = () => {
       <h1>
         <Link to="/">Home</Link>
       </h1>
-      <button className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600">
-        <Link to="/add-product">Add Product</Link>
-      </button>
+
+      <Link to="/add-product">
+        <button className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600">
+          Add Product
+        </button>
+      </Link>
     </nav>
   );
 };

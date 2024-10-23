@@ -40,8 +40,13 @@ export const addProductSlice = createSlice({
     handleEdit: (state) => {
       state.isEditing = true;
     },
+
+    handleSubmit: (state) => {
+      state.formValues = initialState.formValues;
+    },
   },
 });
 
-export const { handleFormValues, handleEdit } = addProductSlice.actions;
+export const { handleFormValues, handleEdit, handleSubmit } =
+  addProductSlice.actions;
 export default addProductSlice.reducer;

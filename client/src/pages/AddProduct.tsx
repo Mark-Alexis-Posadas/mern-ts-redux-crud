@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { handleFormValues } from "../features/addProductSlice";
+import { handleFormValues, handleSubmit } from "../features/addProductSlice";
 import { useCreateNewProductMutation } from "../features/apiSlice";
 
 const categories = [
@@ -42,6 +42,7 @@ export const AddProduct: FC = () => {
       return;
     }
     try {
+      dispatch(handleSubmit());
       await createProduct({
         ...formValues,
         price: Number(formValues.price),

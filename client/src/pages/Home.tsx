@@ -1,5 +1,8 @@
 import { FC } from "react";
-import { useGetProductsQuery } from "../features/apiSlice";
+import {
+  useDeleteProductMutation,
+  useGetProductsQuery,
+} from "../features/apiSlice";
 
 import { Link } from "react-router-dom";
 import { handleEdit } from "../features/addProductSlice";
@@ -7,12 +10,25 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 export const Home: FC = () => {
   const { data: products } = useGetProductsQuery();
   const isEditing = useAppSelector((state) => state.addProductSlice.isEditing);
+  const [deleteProduct] = useDeleteProductMutation();
+
   const dispatch = useAppDispatch();
+
   const handleToggleEdit = () => {
     dispatch(handleEdit());
     console.log("test");
     console.log(isEditing);
   };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProduct(id).unwrap();
+      refetch();
+    } catch (error) {
+      console.error("Failed to delete item: ", error);
+    }
+  };
+
   return (
     <section>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -33,7 +49,10 @@ export const Home: FC = () => {
               </span>
             </div>
             <div className="flex items-center gap-4 mt-5">
-              <button className="text-white bg-red-500 p-2 rounded">
+              <button
+                className="text-white bg-red-500 p-2 rounded"
+                onClick={() => handleDelete(item._id)}
+              >
                 delete
               </button>
               <button
