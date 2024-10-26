@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { handleFormValues, handleSubmit } from "../features/addProductSlice";
+import { handleFormValues, handleSubmit } from "../features/productSlice";
 import { useCreateNewProductMutation } from "../features/apiSlice";
 
 const categories = [
@@ -17,10 +17,8 @@ const categories = [
 export const AddProduct: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const formValues = useAppSelector(
-    (state) => state.addProductSlice.formValues
-  );
-  const isEditing = useAppSelector((state) => state.addProductSlice.isEditing);
+  const formValues = useAppSelector((state) => state.productSlice.formValues);
+  const isEditing = useAppSelector((state) => state.productSlice.isEditing);
   const { name, description, price, category, stock, image } = formValues;
   const [createProduct] = useCreateNewProductMutation();
   console.log(isEditing);

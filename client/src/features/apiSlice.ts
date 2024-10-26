@@ -17,6 +17,7 @@ const apiSlice = createApi({
     getProducts: builder.query<Product[], void>({
       query: () => "/products/get-all-products",
     }),
+
     getSingleProduct: builder.query<Product, string>({
       query: (id) => `/products/get-single-product/${id}`,
     }),
@@ -27,6 +28,7 @@ const apiSlice = createApi({
         body: newProduct,
       }),
     }),
+
     updateProduct: builder.mutation<
       Product,
       { id: string; product: Partial<Product> }
@@ -37,6 +39,7 @@ const apiSlice = createApi({
         body: product,
       }),
     }),
+
     deleteProduct: builder.mutation<void, string>({
       query: (id) => ({
         url: `/products/delete-product/${id}`,

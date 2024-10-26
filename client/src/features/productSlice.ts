@@ -12,6 +12,7 @@ interface FormTypes {
 interface State {
   formValues: FormTypes;
   isEditing: boolean;
+  isConfirmDelete: boolean;
 }
 
 const initialState: State = {
@@ -24,10 +25,11 @@ const initialState: State = {
     image: "",
   },
   isEditing: false,
+  isConfirmDelete: false,
 };
 
-export const addProductSlice = createSlice({
-  name: "addProductSlice",
+export const productSlice = createSlice({
+  name: "productSlice",
   initialState,
   reducers: {
     handleFormValues: (
@@ -44,9 +46,22 @@ export const addProductSlice = createSlice({
     handleSubmit: (state) => {
       state.formValues = initialState.formValues;
     },
+
+    handleToggleDelete: (state) => {
+      state.isConfirmDelete = true;
+    },
+
+    handleToggleCancelDelete: (state) => {
+      state.isConfirmDelete = false;
+    },
   },
 });
 
-export const { handleFormValues, handleEdit, handleSubmit } =
-  addProductSlice.actions;
-export default addProductSlice.reducer;
+export const {
+  handleFormValues,
+  handleEdit,
+  handleToggleDelete,
+  handleToggleCancelDelete,
+  handleSubmit,
+} = productSlice.actions;
+export default productSlice.reducer;
