@@ -1,20 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface FormTypes {
-  name: string;
-  description: string;
-  price: string;
-  category: string;
-  stock: string;
-  image: string;
-}
-
-interface State {
-  formValues: FormTypes;
-  isEditing: boolean;
-  isConfirmDelete: boolean;
-}
-
+import { FormTypes, State } from "../types/product";
 const initialState: State = {
   formValues: {
     name: "",
