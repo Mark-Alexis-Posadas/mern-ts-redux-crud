@@ -11,4 +11,5 @@ export interface State {
   formValues: FormTypes;
   isEditing: boolean;
   isConfirmDelete: boolean;
+  itemId: any;
 }

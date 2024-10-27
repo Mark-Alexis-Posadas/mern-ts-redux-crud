@@ -1,14 +1,33 @@
 import { FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
-import { handleToggleCancelDelete } from "../features/productSlice";
-import { useAppDispatch } from "../hooks/hooks";
+import {
+  handleProceedDelete,
+  handleToggleCancelDelete,
+} from "../features/productSlice";
+import { useAppSelector, useAppDispatch } from "../hooks/hooks";
+import { useDeleteProductMutation } from "../features/apiSlice";
 
-export const ConfirmationDeleteModal: FC = () => {
+export const ConfirmationDeleteModal: FC<{
+  onDeleteSuccess: (id: string) => void;
+}> = ({ onDeleteSuccess }) => {
+  const [deleteProduct] = useDeleteProductMutation();
   const dispatch = useAppDispatch();
+  const itemId = useAppSelector((state) => state.productSlice.itemId);
 
   const handleCancelDelete = () => {
     dispatch(handleToggleCancelDelete());
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteProduct(itemId).unwrap();
+      dispatch(handleProceedDelete(itemId));
+      onDeleteSuccess(itemId);
+      handleCancelDelete();
+    } catch (error) {
+      console.error("Failed to delete item: ", error);
+    }
   };
   return (
     <div className="flex items-center justify-center fixed w-full top-0 left-0 min-h-screen bg-[rgba(0,0,0,0.4)]">
@@ -30,7 +49,12 @@ export const ConfirmationDeleteModal: FC = () => {
           >
             Cancel
           </button>
-          <button className="text-white p-2 rounded bg-red-500">Proceed</button>
+          <button
+            className="text-white p-2 rounded bg-red-500"
+            onClick={handleConfirmDelete}
+          >
+            Proceed
+          </button>
         </div>
       </div>
     </div>

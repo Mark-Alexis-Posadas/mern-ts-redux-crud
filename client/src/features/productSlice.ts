@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { FormTypes, State } from "../types/product";
+
 const initialState: State = {
   formValues: {
     name: "",
@@ -12,6 +13,7 @@ const initialState: State = {
   },
   isEditing: false,
   isConfirmDelete: false,
+  itemId: null,
 };
 
 export const productSlice = createSlice({
@@ -33,11 +35,17 @@ export const productSlice = createSlice({
       state.formValues = initialState.formValues;
     },
 
-    handleToggleDelete: (state) => {
+    handleToggleDelete: (state, action) => {
       state.isConfirmDelete = true;
+      state.itemId = action.payload;
     },
 
     handleToggleCancelDelete: (state) => {
+      state.isConfirmDelete = false;
+    },
+
+    handleProceedDelete: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
       state.isConfirmDelete = false;
     },
   },
@@ -48,6 +56,7 @@ export const {
   handleEdit,
   handleToggleDelete,
   handleToggleCancelDelete,
+  handleProceedDelete,
   handleSubmit,
 } = productSlice.actions;
 export default productSlice.reducer;

@@ -1,16 +1,14 @@
-import { FC } from "react";
-import {
-  useDeleteProductMutation,
-  useGetProductsQuery,
-} from "../features/apiSlice";
+import { FC, useState, useEffect } from "react";
+import { useGetProductsQuery } from "../features/apiSlice";
 
 import { Link } from "react-router-dom";
 import { handleEdit, handleToggleDelete } from "../features/productSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { ConfirmationDeleteModal } from "../components/ConfirmationDeleteModal";
 export const Home: FC = () => {
-  const { data: products } = useGetProductsQuery();
-  const [deleteProduct] = useDeleteProductMutation();
+  const { data: fetchedProducts = [] } = useGetProductsQuery();
+  const [products, setProducts] = useState(fetchedProducts);
+
   const isDelete = useAppSelector(
     (state) => state.productSlice.isConfirmDelete
   );
@@ -21,14 +19,17 @@ export const Home: FC = () => {
     dispatch(handleEdit());
   };
 
-  const handleToDeelte = async (id: string) => {
-    console.log("item to delete");
-    dispatch(handleToggleDelete());
-    try {
-      await deleteProduct(id).unwrap();
-    } catch (error) {
-      console.error("Failed to delete item: ", error);
-    }
+  const handleToDelete = (id: string) => {
+    dispatch(handleToggleDelete(id));
+  };
+
+  useEffect(() => {
+    setProducts(fetchedProducts);
+  }, [fetchedProducts]);
+
+  const handleDeleteSuccess = (id: string) => {
+    // Filter out the deleted product from the local state
+    setProducts(products.filter((product) => product._id !== id));
   };
 
   return (
@@ -53,7 +54,7 @@ export const Home: FC = () => {
             <div className="flex items-center gap-4 mt-5">
               <button
                 className="text-white bg-red-500 p-2 rounded"
-                onClick={() => handleToDeelte(item._id)}
+                onClick={() => handleToDelete(item._id)}
               >
                 delete
               </button>
@@ -67,7 +68,9 @@ export const Home: FC = () => {
           </div>
         ))}
       </div>
-      {isDelete && <ConfirmationDeleteModal />}
+      {isDelete && (
+        <ConfirmationDeleteModal onDeleteSuccess={handleDeleteSuccess} />
+      )}
     </section>
   );
 };
