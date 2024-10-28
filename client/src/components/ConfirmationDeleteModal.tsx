@@ -22,7 +22,7 @@ export const ConfirmationDeleteModal: FC<{
   const handleConfirmDelete = async () => {
     try {
       await deleteProduct(itemId).unwrap();
-      dispatch(handleProceedDelete(itemId));
+      dispatch(handleProceedDelete());
       onDeleteSuccess(itemId);
       handleCancelDelete();
     } catch (error) {

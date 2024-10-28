@@ -21,6 +21,7 @@ const apiSlice = createApi({
     getSingleProduct: builder.query<Product, string>({
       query: (id) => `/products/get-single-product/${id}`,
     }),
+
     createNewProduct: builder.mutation<Product, Partial<Product>>({
       query: (newProduct) => ({
         url: "/products/create-new-product",

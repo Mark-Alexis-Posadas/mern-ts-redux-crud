@@ -44,8 +44,7 @@ export const productSlice = createSlice({
       state.isConfirmDelete = false;
     },
 
-    handleProceedDelete: (state, action: PayloadAction<string>) => {
-      const id = action.payload;
+    handleProceedDelete: (state) => {
       state.isConfirmDelete = false;
     },
   },

@@ -28,7 +28,6 @@ export const Home: FC = () => {
   }, [fetchedProducts]);
 
   const handleDeleteSuccess = (id: string) => {
-    // Filter out the deleted product from the local state
     setProducts(products.filter((product) => product._id !== id));
   };
 
