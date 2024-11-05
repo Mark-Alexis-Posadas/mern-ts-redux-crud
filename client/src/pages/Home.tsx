@@ -2,11 +2,17 @@ import { FC, useState, useEffect } from "react";
 import { useGetProductsQuery } from "../features/apiSlice";
 
 import { Link } from "react-router-dom";
-import { handleEdit, handleToggleDelete } from "../features/productSlice";
+import {
+  handleEdit,
+  handleFormValues,
+  handleSetItemId,
+  handleToggleDelete,
+} from "../features/productSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { ConfirmationDeleteModal } from "../components/ConfirmationDeleteModal";
 export const Home: FC = () => {
-  const { data: fetchedProducts = [] } = useGetProductsQuery();
+  const { data: fetchedProducts = [], refetch } = useGetProductsQuery();
+
   const [products, setProducts] = useState(fetchedProducts);
 
   const isDelete = useAppSelector(
@@ -15,8 +21,21 @@ export const Home: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleToggleEdit = () => {
+  const handleToggleEdit = (product) => {
     dispatch(handleEdit());
+    dispatch(handleFormValues({ name: "name", value: product.name }));
+    dispatch(
+      handleFormValues({ name: "description", value: product.description })
+    );
+    dispatch(
+      handleFormValues({ name: "price", value: product.price.toString() })
+    );
+    dispatch(handleFormValues({ name: "category", value: product.category }));
+    dispatch(
+      handleFormValues({ name: "stock", value: product.stock.toString() })
+    );
+    dispatch(handleFormValues({ name: "image", value: product.image }));
+    dispatch(handleSetItemId(product._id));
   };
 
   const handleToDelete = (id: string) => {
@@ -59,7 +78,7 @@ export const Home: FC = () => {
               </button>
               <button
                 className="text-white bg-blue-500 p-2 rounded"
-                onClick={handleToggleEdit}
+                onClick={() => handleToggleEdit(item)}
               >
                 <Link to="/add-product">edit</Link>
               </button>

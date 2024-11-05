@@ -31,6 +31,10 @@ export const productSlice = createSlice({
       state.isEditing = true;
     },
 
+    handleSetItemId: (state, action: PayloadAction<string | null>) => {
+      state.itemId = action.payload;
+    },
+
     handleSubmit: (state) => {
       state.formValues = initialState.formValues;
     },
@@ -57,5 +61,6 @@ export const {
   handleToggleCancelDelete,
   handleProceedDelete,
   handleSubmit,
+  handleSetItemId,
 } = productSlice.actions;
 export default productSlice.reducer;

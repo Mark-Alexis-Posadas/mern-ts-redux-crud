@@ -1,8 +1,12 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { handleFormValues, handleSubmit } from "../features/productSlice";
-import { useCreateNewProductMutation } from "../features/apiSlice";
+import {
+  useGetProductsQuery,
+  useCreateNewProductMutation,
+  useUpdateProductMutation,
+} from "../features/apiSlice";
 
 const categories = [
   "Electronics",
@@ -15,13 +19,22 @@ const categories = [
 ];
 
 export const AddProduct: FC = () => {
+  const { data: fetchedProducts = [] } = useGetProductsQuery();
+  const { refetch } = useGetProductsQuery();
+
+  const [products, setProducts] = useState(fetchedProducts);
+  const [createProduct] = useCreateNewProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const formValues = useAppSelector((state) => state.productSlice.formValues);
   const isEditing = useAppSelector((state) => state.productSlice.isEditing);
+  const itemId = useAppSelector((state) => state.productSlice.itemId);
+
   const { name, description, price, category, stock, image } = formValues;
-  const [createProduct] = useCreateNewProductMutation();
-  console.log(isEditing);
+
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -39,16 +52,32 @@ export const AddProduct: FC = () => {
       alert("Please fill out the fields");
       return;
     }
+
+    const productData = {
+      name,
+      description,
+      price: Number(price),
+      category,
+      stock: Number(stock),
+      image,
+    };
+
     try {
+      if (isEditing) {
+        await updateProduct({ id: itemId, product: productData });
+
+        const updatedProducts = products.map((product) =>
+          product._id === itemId ? { ...product, ...productData } : product
+        );
+        setProducts(updatedProducts);
+      } else {
+        await createProduct(productData);
+      }
       dispatch(handleSubmit());
-      await createProduct({
-        ...formValues,
-        price: Number(formValues.price),
-        stock: Number(formValues.stock),
-      });
       navigate("/");
+      refetch();
     } catch (error) {
-      console.error("Failed to create product: ", error);
+      console.error("Failed to save product: ", error);
     }
   };
 
@@ -120,7 +149,7 @@ export const AddProduct: FC = () => {
           type="submit"
           className="bg-indigo-500 rounded p-2 hover:bg-indigo-600 text-white"
         >
-          Submit
+          {isEditing ? "Update" : "Submit"}
         </button>
       </form>
     </div>
