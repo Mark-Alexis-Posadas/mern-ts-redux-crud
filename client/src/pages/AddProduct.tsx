@@ -1,7 +1,11 @@
 import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { handleFormValues, handleSubmit } from "../features/productSlice";
+import {
+  handleCancel,
+  handleFormValues,
+  handleSubmit,
+} from "../features/productSlice";
 import {
   useGetProductsQuery,
   useCreateNewProductMutation,
@@ -31,6 +35,7 @@ export const AddProduct: FC = () => {
 
   const formValues = useAppSelector((state) => state.productSlice.formValues);
   const isEditing = useAppSelector((state) => state.productSlice.isEditing);
+
   const itemId = useAppSelector((state) => state.productSlice.itemId);
 
   const { name, description, price, category, stock, image } = formValues;
@@ -145,12 +150,23 @@ export const AddProduct: FC = () => {
           value={image}
           onChange={handleFormChange}
         />
-        <button
-          type="submit"
-          className="bg-indigo-500 rounded p-2 hover:bg-indigo-600 text-white"
-        >
-          {isEditing ? "Update" : "Submit"}
-        </button>
+        <div className="flex items-center gap-3">
+          <Link to="/">
+            <button
+              type="button"
+              className="bg-red-500 rounded p-2 hover:bg-red-600 text-white"
+              onClick={() => dispatch(handleCancel())}
+            >
+              cancel
+            </button>
+          </Link>
+          <button
+            type="submit"
+            className="bg-indigo-500 rounded p-2 hover:bg-indigo-600 text-white"
+          >
+            {isEditing ? "Update" : "Submit"}
+          </button>
+        </div>
       </form>
     </div>
   );

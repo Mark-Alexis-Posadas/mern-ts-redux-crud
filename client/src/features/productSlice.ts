@@ -31,6 +31,12 @@ export const productSlice = createSlice({
       state.isEditing = true;
     },
 
+    handleCancel: (state) => {
+      state.itemId = null;
+      state.formValues = initialState.formValues;
+      state.isEditing = false;
+    },
+
     handleSetItemId: (state, action: PayloadAction<string | null>) => {
       state.itemId = action.payload;
     },
@@ -57,6 +63,7 @@ export const productSlice = createSlice({
 export const {
   handleFormValues,
   handleEdit,
+  handleCancel,
   handleToggleDelete,
   handleToggleCancelDelete,
   handleProceedDelete,

@@ -52,7 +52,7 @@ export const Home: FC = () => {
 
   return (
     <section>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {products?.map((item) => (
           <div key={item._id} className="bg-white rounded-lg shadow-lg p-5">
             <img
@@ -76,12 +76,14 @@ export const Home: FC = () => {
               >
                 delete
               </button>
-              <button
-                className="text-white bg-blue-500 p-2 rounded"
-                onClick={() => handleToggleEdit(item)}
-              >
-                <Link to="/add-product">edit</Link>
-              </button>
+              <Link to="/add-product">
+                <button
+                  className="text-white bg-blue-500 p-2 rounded"
+                  onClick={() => handleToggleEdit(item)}
+                >
+                  edit
+                </button>
+              </Link>
             </div>
           </div>
         ))}
