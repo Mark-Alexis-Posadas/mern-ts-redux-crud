@@ -63,7 +63,10 @@ export const Home: FC = () => {
     <section>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {products?.map((item) => (
-          <div key={item._id} className="bg-white rounded-lg shadow-lg p-5">
+          <div
+            key={item._id}
+            className="bg-white rounded-lg shadow-custom-shadow p-5"
+          >
             <img
               src={item.image}
               alt={item.name}
