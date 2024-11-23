@@ -10,8 +10,17 @@ import {
 } from "../features/productSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { ConfirmationDeleteModal } from "../components/ConfirmationDeleteModal";
+interface T {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  stock: number;
+  image: string;
+  _id: string;
+}
 export const Home: FC = () => {
-  const { data: fetchedProducts = [], refetch } = useGetProductsQuery();
+  const { data: fetchedProducts = [] } = useGetProductsQuery();
 
   const [products, setProducts] = useState(fetchedProducts);
 
@@ -21,7 +30,7 @@ export const Home: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleToggleEdit = (product) => {
+  const handleToggleEdit = (product: T) => {
     dispatch(handleEdit());
     dispatch(handleFormValues({ name: "name", value: product.name }));
     dispatch(
