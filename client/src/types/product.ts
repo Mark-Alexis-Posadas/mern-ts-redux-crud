@@ -1,9 +1,9 @@
 export interface FormTypes {
   name: string;
   description: string;
-  price: string;
+  price: number;
   category: string;
-  stock: string;
+  stock: number;
   image: string;
 }
 
